@@ -6,6 +6,9 @@ It uses run-time integration via JS.
 
 # To Run
 
+## Requirements
+This project uses docker so you'll need docker installed.
+
 ## Windows
 1. Clone the repo
 2. Navigate to the root of the repo
