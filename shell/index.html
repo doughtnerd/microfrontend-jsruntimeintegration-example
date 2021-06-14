@@ -1,8 +1,14 @@
 <!DOCTYPE html>
 
 <head>
+    <script  type="text/javascript">
+      function handle(e) {
+        console.log(e)
+        console.log(document.currentScript)
+      }
+    </script>
     <script src="http://localhost:8080/dashboard.js"></script>
-    <script src="http://localhost:8080/loans.js"></script>
+    <script src="http://localhost:8080/loans.js" onload="handle"></script>
 </head>
 <body>
     <header>I'm the header</header>
@@ -10,11 +16,14 @@
 
     </content>
     <footer>I'm the footer</footer>
+    <script type="text/javascript">
+      console.log(document.currentScript)
+    </script>
 
     <script type="text/javascript">
         // These global functions are attached to window by the above scripts
         const microFrontendsByRoute = {
-          '/': window.renderDashboard,
+          '/': renderDashboard,
           '/loans': window.renderLoans,
         };
         const renderFunction = microFrontendsByRoute[window.location.pathname];
