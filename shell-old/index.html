@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<head>
+    <script src="http://localhost:8080/main.bundle.js"></script>
+    <script defer src="http://localhost:8080/loans.js"></script>
+</head>
+<body>
+    <header>I'm the header</header>
+    <content id="react-root" style="min-height: 900px">
+
+    </content>
+    <footer>I'm the footer</footer>
+    <script type="text/javascript" defer>
+        // These global functions are attached to window by the above scripts
+      const microFrontendsByRoute = {
+        '/': window.SomniumStudios.MicroFE.render.Dashboard,
+        '/loans': window.renderLoans,
+      };
+      const renderFunction = microFrontendsByRoute[window.location.pathname];
+
+      // Having determined the entry-point function, we now call it,
+      // giving it the ID of the element where it should render itself
+      renderFunction(document.getElementById('react-root'));
+    </script>
+</body>

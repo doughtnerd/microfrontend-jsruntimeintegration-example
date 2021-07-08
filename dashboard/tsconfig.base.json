@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "typeRoots": ["node_modules/@types"],
+        "types": ["react"],
+        "lib": ["dom", "DOM.Iterable", "ESNext"],
+        "esModuleInterop": true,
+        "jsx": "react",
+        "strict": true,
+        "module":"ESNext",
+        "moduleResolution": "node",
+        "outDir": "../js-bundles/dashboard"
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "**/*.spec.ts", "**/*.test.ts"]
+}
