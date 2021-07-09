@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<head>
+    <script src="http://localhost:8080/recipe-app.bundle.js"></script>
+    <script src="http://localhost:8080/recipe-book-app.bundle.js"></script>
+</head>
+<body>
+    <style>
+      #main-header {
+        height: 64px;
+        background: beige;
+        padding: 8px;
+        position: absolute;
+        width: 100%;
+        left: 0;
+        top: 0;
+        box-shadow: 0 0 2px 3px rgb(0 0 0 / 33%);
+      }
+
+      #main-footer  {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 32px;
+        background: beige;
+        padding: 8px;
+      }
+
+      #react-root {
+        position: relative;
+        top: 96px;
+      }
+    </style>
+    <header id="main-header">I'm the header</header>
+    <content id="react-root" style="min-height: 900px">
+
+    </content>
+    <footer id="main-footer">I'm the footer</footer>
+    <script type="text/javascript" defer>
+        // These global functions are attached to window by the above scripts
+      const microFrontendsByRoute = {
+        '/': window.SomniumStudios.MicroFE.render.RecipeBook,
+        '/add-recipe': window.SomniumStudios.MicroFE.render.Recipe
+      };
+      const renderFunction = microFrontendsByRoute[window.location.pathname];
+
+      // Having determined the entry-point function, we now call it,
+      // giving it the ID of the element where it should render itself
+      renderFunction(document.getElementById('react-root'));
+    </script>
+</body>

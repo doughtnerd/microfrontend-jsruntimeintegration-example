@@ -1,0 +1,61 @@
+version: '3.7'
+services:
+
+    app-shell: 
+        image: doughtnerd/recipe-app-shell:dev
+        networks:
+            - recipe-app-network
+        build: 
+            context: ./recipe-app-shell
+        environment:
+            PORT: 8080
+        ports:
+            - 80:80
+        environment:
+            NGINX_API_PROXY_PASS: 'http://recipes_server:3005'
+    
+    asset-server:
+        container_name: assets
+        image: halverneus/static-file-server:latest
+        networks:
+            - recipe-app-network
+        ports:
+            - 8080:8080
+        volumes:
+            - ./asset-server:/web
+
+    recipes_server:
+        image: doughtnerd/recipe-app-server:dev
+        container_name: recipes_server
+        networks:
+            - recipe-app-network
+        build:
+            context: ./recipe-server
+            target: dev
+        command: "./bin/wait-for-it.sh mysql:3306 --timeout=30 -- npm run start:dev"
+        ports:
+            - 3005:3005
+            - 9229:9229
+        environment:
+            - PORT=3005
+        volumes: 
+            - ./recipe-server:/usr/src/app
+            - /usr/src/app/node_modules
+
+    mysql: 
+        networks:
+            - recipe-app-network
+        image: mysql:latest
+        container_name: mysql
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        ports: 
+            - 3306:3306
+        environment:
+            MYSQL_ROOT_PASSWORD: "password"
+            MYSQL_DATABASE: "recipe-app-db"
+            MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+            MYSQL_PORT: 3306
+
+networks: 
+    recipe-app-network:

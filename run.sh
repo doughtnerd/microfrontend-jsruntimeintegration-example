@@ -1,3 +1,16 @@
-docker build -t minimal-nginx ./shell/
-docker run -d -e PORT=80 -p 80:80 --name my-nginx minimal-nginx
-docker run -d -v %cd%/js-bundles:/web -p 8080:8080 --name assets halverneus/static-file-server:latest
+docker-compose down -v --remove-orphans
+
+cd recipe-app
+yarn build:webpack
+cd ..
+
+cd recipe-book-app
+yarn build:webpack
+cd ..
+
+rm -rdf asset-server/*
+
+cp -r recipe-app/dist/assets/js/* asset-server
+cp -r recipe-book-app/dist/assets/js/* asset-server
+
+docker-compose up --build

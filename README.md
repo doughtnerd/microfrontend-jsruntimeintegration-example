@@ -9,14 +9,15 @@ It uses run-time integration via JS.
 ## Requirements
 This project uses docker so you'll need docker installed.
 
-## Windows
-1. Clone the repo
-2. Navigate to the root of the repo
-3. Type ```run.bat``` into the console
+You'll also need yarn globally installed on your machine.
+
+Also, there are some commands that are 'nix platform only, sorry windows users - use WSL.
 
 
+## 'Nix Platforms
+Run the shell script
+```shell
+./run.sh
+```
 
-## 'nix Platforms
-1. Clone the repo
-2. Navigate to the root of the repo
-3. Type ```./run.sh```
+# Exploring
