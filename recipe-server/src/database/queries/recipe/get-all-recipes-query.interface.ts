@@ -1,4 +1,3 @@
 export interface IGetAllRecipesQuery {
-
-    getAllRecipes(): Promise<any>;
+  getAllRecipes(): Promise<any>;
 }
