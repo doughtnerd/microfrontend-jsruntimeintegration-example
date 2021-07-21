@@ -1,25 +1,33 @@
+import { HashRouter, Route, Switch } from "react-router-dom"
 import React from 'react'
-import {useFetch} from './hooks/useFetch.hook'
+import Navigation from 'addrecipe/Navigation'
+import localRoutes from './routes'
+import remoteRoutes from 'addrecipe/routes'
+
+const routes = [...localRoutes, ...remoteRoutes];
 
 export const App = (): JSX.Element => {
 
-    const response = useFetch('/api/recipes')
-
-    if(response) {
-        return (
-            response.map((recipe: any) => 
-            <div key={recipe.id}>
-                <img src={recipe.image_url} />
-                <div>{recipe.name}</div>
-                <div>{recipe.description}</div>
-                <div>
-                    <ul>
-                        {recipe.ingredients_json.map((ingredient: any) => <li key={ingredient}>{ingredient}</li>)}
-                    </ul>
-                </div>
-            </div>)
-        )
-    }
-
-    return <>...loading</>
+    return (
+        <HashRouter>
+            <div>
+                <h1>Recipe Book App</h1>
+                <Navigation />
+                <React.Suspense fallback={<div>Loading...</div>}>
+                <Switch>
+                    {routes.map((route) => (
+                        <Route
+                        key={route.path}
+                        path={route.path}
+                        component={route.component}
+                        exact={route.exact}
+                        />
+                    ))}
+                </Switch>
+                </React.Suspense>
+            </div>
+        </HashRouter>
+    )
 }
+
+export default App

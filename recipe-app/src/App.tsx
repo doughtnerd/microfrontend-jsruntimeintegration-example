@@ -1,28 +1,33 @@
+import { HashRouter, Route, Switch } from "react-router-dom"
 import React from 'react'
+import Navigation from './Navigation'
+import localRoutes from './routes'
+import remoteRoutes from 'recipes/routes'
+
+const routes = [...localRoutes, ...remoteRoutes];
 
 export const App = (): JSX.Element => {
 
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-        console.log(e)
-    }
     return (
-        <>
-            <form style={{display: 'flex', flexDirection: 'column'}} onSubmit={handleSubmit}>
-                <label htmlFor="name">Name</label>
-                <input type="text" id="name" placeholder="Example dish"/>
-
-                <label htmlFor="name">Description</label>
-                <input type="text" id="description" placeholder="A real yummy example dish"/>
-
-                <label htmlFor="name">ImageURL</label>
-                <input type="text" id="imageUrl" placeholder="http://google.com/images/some-random-image"/>
-
-                <label htmlFor="name">ingredients</label>
-                <input type="text" id="ingredients" placeholder="tomato,onion,beef" />
-
-                <button type="submit">Submit</button>
-            </form>
-        </>
+        <HashRouter>
+            <div>
+                <h1>Add Recipe App</h1>
+                <Navigation />
+                <React.Suspense fallback={<div>Loading...</div>}>
+                <Switch>
+                    {routes.map((route) => (
+                        <Route
+                        key={route.path}
+                        path={route.path}
+                        component={route.component}
+                        exact={route.exact}
+                        />
+                    ))}
+                </Switch>
+                </React.Suspense>
+            </div>
+        </HashRouter>
     )
 }
+
+export default App

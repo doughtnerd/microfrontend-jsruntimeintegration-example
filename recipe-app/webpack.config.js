@@ -1,32 +1,47 @@
 const path = require("path");
 const TerserPlugin = require("terser-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ModuleFederationPlugin = require("webpack").container.ModuleFederationPlugin;
+
+const deps = require("./package.json").dependencies;
 
 module.exports = function (_env, argv) {
   const isProduction = argv.mode === "production";
   const isDevelopment = !isProduction;
 
   return {
-    devtool: isDevelopment && "cheap-module-source-map",
     entry: "./src/index.tsx",
     output: {
-      path: path.resolve(__dirname, "dist"),
-      filename: (pathData) => {
-        return pathData.chunk.name === "main" ? "assets/js/recipe-app.bundle.js" : "assets/js/[name].[contenthash:8].bundle.js";
-      },
-      publicPath: "/",
-      clean: true,
+      publicPath: 'auto',
     },
-    mode: isProduction ? "production" : "development",
-    optimization: {
-      minimize: isProduction,
-      minimizer: [new TerserPlugin({ extractComments: isDevelopment, exclude: /.*index.tsx$/ })],
-      usedExports: !isProduction,
-    },
+    mode: "development",
     plugins: [
+      new ModuleFederationPlugin({
+        name: "addrecipe",
+        filename: "remoteEntry.js",
+        remotes: {
+          recipes: "recipes@http://localhost:3001/remoteEntry.js",
+        },
+        exposes: {
+          "./Navigation": "./src/Navigation",
+          "./routes": "./src/routes",
+        },
+        shared: {
+          ...deps,
+          react: {
+            eager: true,
+            singleton: true,
+            requiredVersion: deps.react,
+          },
+          "react-dom": {
+            eager: true,
+            singleton: true,
+            requiredVersion: deps["react-dom"],
+          },
+        },
+      }),
       new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, "public/index.html"),
-        inject: true,
+        template: "./public/index.html"
       }),
     ],
     resolve: {
@@ -47,10 +62,8 @@ module.exports = function (_env, argv) {
       ],
     },
     devServer: {
-      compress: true,
-      historyApiFallback: true,
-      open: true,
-      overlay: true,
+      port: 3002,
+      contentBase: path.join(__dirname, "dist")
     },
   };
 };

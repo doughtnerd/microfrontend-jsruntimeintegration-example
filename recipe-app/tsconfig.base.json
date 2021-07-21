@@ -11,6 +11,6 @@
         "moduleResolution": "node",
         "outDir": "../js-bundles/dashboard"
     },
-    "include": ["src/**/*"],
+    "include": ["src/**/*", "**/*.d.ts"],
     "exclude": ["node_modules", "**/*.spec.ts", "**/*.test.ts"]
 }

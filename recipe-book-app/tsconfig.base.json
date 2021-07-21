@@ -11,6 +11,6 @@
         "moduleResolution": "node",
         "outDir": "dist"
     },
-    "include": ["src/**/*"],
+    "include": ["src/**/*", "**/*.d.ts"],
     "exclude": ["node_modules", "**/*.spec.ts", "**/*.test.ts"]
 }
