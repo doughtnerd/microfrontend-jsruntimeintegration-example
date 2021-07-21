@@ -2,7 +2,7 @@
 
 This is a minimal setup of a possible Micro-Frontend architecture.
 
-It uses run-time integration via JS.
+It uses module federation
 
 # To Run
 
@@ -19,5 +19,9 @@ Run the shell script
 ```shell
 ./run.sh
 ```
+
+Start the recipe-app and recipe-book app from their respective directories with `yarn start`
+
+This should launch both apps on their respective ports and share a navigation component/routes between them via module federation.
 
 # Exploring
